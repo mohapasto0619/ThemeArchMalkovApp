@@ -1,0 +1,5 @@
+import_from_git(
+    url: "https://oauth2:zaw55WuFgxWZBA2VxhzR@git-oab.si.fr.intraorange/practice-flutter/fastlane-core.git",
+    branch: "add-zip-archive_fvm",
+    path: "Fastfile"
+  )

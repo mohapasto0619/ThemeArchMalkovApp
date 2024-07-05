@@ -1,0 +1,44 @@
+parameters:
+  env: ''
+  flutterVersion: 'stable'
+  fvmVersion: ''
+  appPackageName: ''
+
+jobs:
+  - job: Build_ios_nocodesign_${{ parameters.env }}
+    displayName: 'Build non signed ${{ parameters.env }} iOS'
+
+    steps:
+      - template: ../tasks/task_init.yml
+        parameters:
+          fvmVersion: ${{ parameters.fvmVersion }}
+          flutterVersion: ${{ parameters.flutterVersion }}
+
+      - template: ../tasks/task_add_env_banners.yml
+        parameters:
+          env: ${{ parameters.env }}
+          contents:
+            - '**/AppIcon.appiconset/*.png'
+
+      - task: ExtractVersionFromTag@1
+
+      - task: UpdateiOSVersionInfoPlist@1
+        inputs:
+          infoPlistPath: '$(Build.SourcesDirectory)/ios/Runner/Info.plist'
+
+      - template: ../tasks/task_build_ios_nosign.yml
+        parameters:
+          env: ${{ parameters.env }}
+
+      - template: ../tasks/task_rename_ios_artifacts.yml
+        parameters:
+          env: '${{ parameters.env }}'
+          appPackageName: '${{ parameters.appPackageName }}'
+
+      - template: ../tasks/task_publish_artifacts.yml
+        parameters:
+          sourceFolder: '$(Build.SourcesDirectory)/ios/build-output'
+          contents: |
+            *.zip
+          targetFolder: 'drop/ios/${{ parameters.env }}'
+          artifactName: 'release_${{ parameters.env }}_ios'

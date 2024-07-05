@@ -1,0 +1,9 @@
+parameters:
+  reportFileName: 'analyze.txt'
+
+steps:
+  - task: Bash@3
+    displayName: 'Flutter analyze'
+    inputs:
+      targetType: 'inline'
+      script: 'fvm flutter analyze --no-fatal-infos --write=${{ parameters.reportFileName }}'

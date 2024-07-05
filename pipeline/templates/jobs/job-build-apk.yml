@@ -1,0 +1,64 @@
+parameters:
+  env: ''
+  flutterVersion: 'stable'
+  fvmVersion: ''
+  appPackageName: ''
+  apkSignerKeystore:
+    file: ''
+    filePassword: ''
+    alias: ''
+    aliasPassword: ''
+
+jobs:
+  - job: Build_apk_${{ parameters.env }}
+    displayName: 'Build ${{ parameters.env }} Android'
+
+    steps:
+      - template: ../tasks/task_init.yml
+        parameters:
+          fvmVersion: ${{ parameters.fvmVersion }}
+          flutterVersion: ${{ parameters.flutterVersion }}
+
+      - template: ../tasks/task_add_env_banners.yml
+        parameters:
+          env: ${{ parameters.env }}
+          contents:
+            - '**/res/**/ic_launcher.png'
+
+      - task: ExtractVersionFromTag@1
+
+      - task: UpdateAndroidVersionGradle@1
+        inputs:
+          buildGradlePath: '$(Build.SourcesDirectory)/android/app/build.gradle'
+
+      - task: Bash@3
+        displayName: 'Flutter build'
+        inputs:
+          targetType: 'inline'
+          script: |
+            fvm flutter build apk --flavor ${{ parameters.env }} -t lib/main_${{ parameters.env }}.dart
+
+      - task: AndroidSigning@3
+        displayName: 'Signing and aligning APK file(s)'
+        inputs:
+          apkFiles: '$(Build.SourcesDirectory)/build/app/outputs/flutter-apk/app-${{ parameters.env }}-release.apk'
+          apkSignerKeystoreFile: ${{ parameters.apkSignerKeystore.file }}
+          apkSignerKeystorePassword: ${{ parameters.apkSignerKeystore.filePassword }}
+          apkSignerKeystoreAlias: ${{ parameters.apkSignerKeystore.alias }}
+          apkSignerKeyPassword: ${{ parameters.apkSignerKeystore.aliasPassword }}
+          zipalign: false # not required as already done by gradle 4.1.0+
+
+      - task: Bash@3
+        displayName: 'Renaming file'
+        inputs:
+          targetType: 'inline'
+          script: |
+            set -x
+            mv $(Build.SourcesDirectory)/build/app/outputs/flutter-apk/app-${{ parameters.env }}-release.apk $(Build.SourcesDirectory)/$(projectDirectory)/build/app/outputs/flutter-apk/${{ parameters.appPackageName }}-${{ parameters.env }}-$(MAJOR).$(MINOR).$(PATCH).$(NUMBER_OF_COMMITS).apk
+
+      - template: ../tasks/task_publish_artifacts.yml
+        parameters:
+          sourceFolder: '$(Build.SourcesDirectory)/build/app/outputs'
+          contents: 'flutter-apk/${{ parameters.appPackageName }}-${{ parameters.env }}-$(MAJOR).$(MINOR).$(PATCH).$(NUMBER_OF_COMMITS).apk'
+          targetFolder: 'drop/android/${{ parameters.env }}'
+          artifactName: 'release_${{ parameters.env }}_android'

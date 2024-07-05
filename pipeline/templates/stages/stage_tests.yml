@@ -1,0 +1,23 @@
+parameters:
+  agentName: 'Any'
+  flutterVersion: 'stable'
+  fvmVersion: '2.4.0'
+
+stages:
+  - stage: Tests
+    displayName: 'Stage Tests'
+    pool:
+      name: ads_Mac
+      ${{ if eq(parameters.agentName, 'Any') }}:
+        demands:
+          - FVM_PATH
+          - sh
+
+      ${{ if ne(parameters.agentName, 'Any') }}:
+        demands:
+          - Agent.Name -equals ${{ parameters.agentName }}
+    jobs:
+      - template: ../jobs/job_tests.yml
+        parameters:
+          flutterVersion: ${{ parameters.flutterVersion }}
+          fvmVersion: ${{ parameters.fvmVersion }}

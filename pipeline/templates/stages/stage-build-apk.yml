@@ -1,0 +1,41 @@
+parameters:
+  env: ''
+  flutterVersion: 'stable'
+  fvmVersion: '2.4.0'
+  agentName: 'Any'
+  dependsOn: ''
+  condition: ''
+  apkSignerKeystore:
+    file: ''
+    filePassword: ''
+    alias: ''
+    aliasPassword: ''
+
+stages:
+  - stage: Build_apk_${{ parameters.env }}
+    displayName: 'Build ${{ parameters.env }} Android'
+    dependsOn: ${{ parameters.dependsOn }}
+    condition: ${{ parameters.condition }}
+    pool:
+      name: ads_Mac
+      ${{ if eq(parameters.agentName, 'Any') }}:
+        demands:
+          - FVM_PATH
+          - sh
+          - JDK_VERSION -equals 11.0.11
+
+      ${{ if ne(parameters.agentName, 'Any') }}:
+        demands:
+          - Agent.Name -equals ${{ parameters.agentName }}
+    jobs:
+      - template: ../jobs/job-build-apk.yml
+        parameters:
+          env: ${{ parameters.env }}
+          appPackageName: ${{ parameters.appPackageName }}
+          flutterVersion: ${{ parameters.flutterVersion }}
+          fvmVersion: ${{ parameters.fvmVersion }}
+          apkSignerKeystore:
+            file: ${{ parameters.apkSignerKeystore.file }}
+            filePassword: ${{ parameters.apkSignerKeystore.filePassword }}
+            alias: ${{ parameters.apkSignerKeystore.alias }}
+            aliasPassword: ${{ parameters.apkSignerKeystore.aliasPassword }}

@@ -1,0 +1,27 @@
+parameters:  
+  sourceFolder: ''
+  contents: '**'
+  targetFolder:  ''
+  artifactName: ''
+
+steps: 
+  - task: Bash@3
+    displayName: 'Check files'
+    inputs:
+      targetType: 'inline'
+      script: |
+        cd ${{ parameters.sourceFolder }}
+        ls
+
+  - task: CopyFiles@2
+    displayName: 'Copy deliverables'
+    inputs:
+      SourceFolder: '${{ parameters.sourceFolder }}'
+      Contents: '${{ parameters.contents }}'
+      TargetFolder: '${{ parameters.targetFolder }}'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish release'
+    inputs:
+      pathToPublish: '${{ parameters.targetFolder }}'
+      artifactName: '${{ parameters.artifactName }}'

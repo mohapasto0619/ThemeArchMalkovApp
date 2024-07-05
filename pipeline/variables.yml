@@ -1,0 +1,11 @@
+variables:
+  - name: 'fvmVersion'
+    value: '2.4.0'
+  - name: 'flutterVersion'
+    value: '3.13.1'
+  - name: 'xcodeVersion'
+    value: '14'
+  - name: 'jdkVersion'
+    value: '11.0.11'
+  - name: 'appPackageName'
+    value: 'malkovapp'

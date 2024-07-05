@@ -1,0 +1,33 @@
+parameters:
+  env: ''
+  flutterVersion: 'stable'  
+  fvmVersion: ''
+  xcodeVersion: ''
+  appPackageName: ''
+  agentName: 'Any'
+  dependsOn: ''
+  condition: ''
+
+stages:
+  - stage: Build_ios_nocodesign_${{ parameters.env }}
+    displayName: 'Build non signed ${{ parameters.env }} iOS'
+    dependsOn: ${{ parameters.dependsOn }}
+    condition: ${{ parameters.condition }}
+    pool:
+      name: ads_Mac
+      ${{ if eq(parameters.agentName, 'Any') }}:
+        demands:
+          - FVM_PATH
+          - sh
+          - XCODE_MAJOR_VERSION -equals ${{ parameters.xcodeVersion }}
+
+      ${{ if ne(parameters.agentName, 'Any') }}:
+        demands:
+          - Agent.Name -equals ${{ parameters.agentName }}
+    jobs:
+      - template: ../jobs/job_build_ios_nosign.yml
+        parameters:
+          env: ${{ parameters.env }}
+          flutterVersion: ${{ parameters.flutterVersion }}
+          fvmVersion: ${{ parameters.fvmVersion }}
+          appPackageName: ${{ parameters.appPackageName }}

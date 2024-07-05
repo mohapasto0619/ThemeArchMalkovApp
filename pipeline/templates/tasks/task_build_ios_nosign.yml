@@ -1,0 +1,23 @@
+{{=<% %>=}}parameters:
+  env: ''
+
+steps:
+  - task: Bash@3
+    displayName: 'Build non signed iOS (xcarchive + dSYM files)'
+    inputs:
+      targetType: 'inline'
+      script: |
+        cd $(Build.SourcesDirectory)/ios/fastlane
+        bundle config set path vendor/bundle
+        bundle install
+        fvm flutter clean
+        fvm flutter pub get
+        fvm flutter build ios --release --flavor dev -t lib/main_dev.dart --no-codesign
+        xcodebuild -resolvePackageDependencies -workspace $(Build.SourcesDirectory)/ios/Runner.xcworkspace -scheme dev -configuration Release-dev
+        xcodebuild -showBuildSettings -workspace $(Build.SourcesDirectory)/ios/Runner.xcworkspace -scheme dev -configuration Release-dev
+        xcodebuild -workspace $(Build.SourcesDirectory)/ios/Runner.xcworkspace -scheme dev -configuration Release-dev -sdk iphoneos archive -archivePath $(Build.SourcesDirectory)/ios/build-output/teamtime_mobile.xcarchive CODE_SIGN_IDENTITY=”” CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+        cd $(Build.SourcesDirectory)/ios/build-output && zip -r -X -y teamtime_mobile.xcarchive.zip teamtime_mobile.xcarchive
+        cd $(Build.SourcesDirectory)/ios/build-output/teamtime_mobile.xcarchive/dSYMs && zip -r $(Build.SourcesDirectory)/ios/build-output/teamtime_mobile.app.dSYM.zip *.dSYM
+
+#fvm flutter build ipa --release --flavor dev -t lib/main_dev.dart --no-codesign 
+#//can also used for generate an ipa or xcarchive in case there is no code sign

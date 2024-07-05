@@ -1,0 +1,44 @@
+trigger: none
+name: $(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.rr)
+
+pool:
+  name: ads_Mac
+
+variables:
+  - template: variables.yml
+  - group: malkovapp-secrets
+  - name: 'env'
+    value: 'dev'
+
+stages:
+  - template: ./templates/stages/stage_tests.yml
+    parameters:
+      agentName: ${{ variables.agentName }}
+      flutterVersion: ${{ variables.flutterVersion }}
+      fvmVersion: ${{ variables.fvmVersion }}
+
+  - template: ./templates/stages/stage-build-apk.yml
+    parameters:
+      dependsOn: Tests
+      condition: succeeded('Tests')
+      agentName: ${{ variables.agentName }}
+      env: ${{ variables.env }}
+      appPackageName: ${{variables.appPackageName }}
+      flutterVersion: ${{ variables.flutterVersion }}
+      fvmVersion: ${{ variables.fvmVersion }}
+      apkSignerKeystore:
+        file: "malkovapp_dev_keystore.keystore"
+        filePassword: $(malkovapp_dev_keystore_password)
+        alias: "$(malkovapp_dev_keystore_alias)"
+        aliasPassword: $(malkovapp_dev_keystore_alias_password)
+
+  - template: ./templates/stages/stage_build_ios_nosign.yml
+    parameters:
+      dependsOn: Tests
+      condition: succeeded('Tests')
+      agentName: ${{ variables.agentName }}
+      env: ${{ variables.env }}
+      appPackageName: ${{ variables.appPackageName }}
+      flutterVersion: ${{ variables.flutterVersion }}
+      fvmVersion: ${{ variables.fvmVersion }}
+      xcodeVersion: ${{ variables.xcodeVersion }}

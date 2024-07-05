@@ -1,0 +1,6 @@
+{{=<% %>=}}steps:
+  - task: Bash@3
+    displayName: 'Tests coverage'
+    inputs:
+      targetType: 'inline'
+      script: 'fvm flutter test --coverage'

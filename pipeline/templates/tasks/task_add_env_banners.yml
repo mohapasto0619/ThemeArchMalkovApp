@@ -1,0 +1,14 @@
+parameters:
+  env: ''
+  contents: {}
+
+steps:
+  - ${{ each content in parameters.contents }}:
+      - task: LaunchIconBadge@1
+        condition: ne('${{ parameters.env }}', 'prod')
+        displayName: 'Add env banners'
+        inputs:
+          sourceFolder: '$(Build.SourcesDirectory)'
+          contents: ${{ content }}
+          bannerVersionNamePosition: 'bottomRight'
+          bannerVersionNameText: ${{ parameters.env }}

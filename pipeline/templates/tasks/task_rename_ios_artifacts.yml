@@ -1,0 +1,30 @@
+parameters:
+  env: ''
+  appPackageName: 'app'
+  produceIpa: false
+
+steps:
+  - task: ExtractVersionFromTag@1
+    displayName: 'Extract Version from Git'
+
+  - task: Bash@3
+    displayName: 'Renaming xcarchive and dSYM flies'
+    inputs:
+      targetType: 'inline'
+      script: |
+        cd $(Build.SourcesDirectory)
+        outputName='${{ parameters.appPackageName }}-${{ parameters.env }}-$(MAJOR).$(MINOR).$(PATCH).$(NUMBER_OF_COMMITS)'
+        echo $outputName
+        mv ios/build-output/*.dSYM.zip ios/build-output/$outputName.dSYM.zip
+        mv ios/build-output/*.xcarchive.zip ios/build-output/$outputName.xcarchive.zip
+  
+  - task: Bash@3
+    displayName: 'Renaming ipa file'
+    condition: ${{ parameters.produceIpa }}
+    inputs:
+      targetType: 'inline'
+      script: |
+        cd $(Build.SourcesDirectory)
+        outputName='${{ parameters.appPackageName }}-${{ parameters.env }}-$(MAJOR).$(MINOR).$(PATCH).$(NUMBER_OF_COMMITS)'
+        echo $outputName
+        mv ios/build-output/*.ipa ios/build-output/$outputName.ipa

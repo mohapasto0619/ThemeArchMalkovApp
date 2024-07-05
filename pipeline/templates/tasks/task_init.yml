@@ -1,0 +1,27 @@
+parameters:
+  fvmVersion: '2.4.0'
+  flutterVersion: 'stable'
+
+steps:
+  - checkout: self
+    clean: true
+    submodules: true
+    
+  - template: ../tasks/task_put_env_file.yml
+    parameters:
+      fileName: '.env'
+
+  - task: Bash@3
+    displayName: 'Flutter init'
+    inputs:
+      targetType: 'inline'
+      script: |
+        ssh-add -D
+        dart pub global activate fvm ${{ parameters.fvmVersion }}
+        fvm install ${{ parameters.flutterVersion }}
+        fvm list
+        fvm use ${{ parameters.flutterVersion }}
+        fvm flutter --version
+        fvm flutter clean
+        fvm flutter pub get
+        fvm flutter pub run build_runner build --delete-conflicting-outputs

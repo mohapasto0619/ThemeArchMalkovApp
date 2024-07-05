@@ -1,0 +1,6 @@
+#include "Release.xcconfig"
+PRODUCT_BUNDLE_IDENTIFIER=com.orange.dev
+FLUTTER_TARGET=lib/main_dev.dart
+FLUTTER_BUILD_NAME=dev
+APP_NAME=malkovapp dev
+

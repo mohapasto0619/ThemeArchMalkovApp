@@ -1,0 +1,10 @@
+android {
+    productFlavors {
+        dev {
+            dimension "app"
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
+            manifestPlaceholders = [appName: "malkovapp dev"]
+        }
+    }
+}
