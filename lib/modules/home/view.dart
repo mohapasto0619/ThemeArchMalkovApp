@@ -8,17 +8,22 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
+    final colors = context.colors;
+    final paddings = context.paddings;
+    final styles = context.styles;
+
     return Scaffold(
-      backgroundColor: AppThemeData.of(context)!.appColorTheme.background,
+      backgroundColor: colors.background,
       body: Center(
-          child: Container(
-        color: AppThemeData.of(context)!.appColorTheme.primary,
-        padding:
-            EdgeInsets.all(AppThemeData.of(context)!.appDimens.paddings.base),
-        child: Text(
-          localizations.hello,
+        child: Container(
+          color: colors.primary,
+          padding: EdgeInsets.all(paddings.base),
+          child: Text(
+            localizations.hello,
+            style: styles.pageSubtitle.withColor(colors.buttonText),
+          ),
         ),
-      )),
+      ),
     );
   }
 }

@@ -15,23 +15,26 @@ class AppColorTheme with _$AppColorTheme {
   const factory AppColorTheme({
     required Color primary,
     required Color background,
+    required Color buttonText,
   }) = _AppColorTheme;
 
   factory AppColorTheme.light() => const AppColorTheme(
         primary: Color(0xFFfb8500),
         background: Color(0xFFf1faee),
+        buttonText: Color(0xFFFFFFFF),
       );
 
   factory AppColorTheme.dark() => const AppColorTheme(
         primary: Color(0xFF8ecae6),
         background: Color(0xFF023047),
+        buttonText: Color(0xFF020202),
       );
 }
 
-AppColorTheme handleTheme(
-  BuildContext context,
-) {
-  final brightness = MediaQuery.platformBrightnessOf(context);
-  final isDarkMode = brightness == Brightness.dark;
-  return isDarkMode ? AppColorTheme.dark() : AppColorTheme.light();
+extension BuildContextExt on BuildContext {
+  AppColorTheme get handleThemeColor {
+    final brightness = MediaQuery.platformBrightnessOf(this);
+    final isDarkMode = brightness == Brightness.dark;
+    return isDarkMode ? AppColorTheme.dark() : AppColorTheme.light();
+  }
 }

@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$AppColorTheme {
   Color get primary => throw _privateConstructorUsedError;
   Color get background => throw _privateConstructorUsedError;
+  Color get buttonText => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AppColorThemeCopyWith<AppColorTheme> get copyWith =>
@@ -30,7 +31,7 @@ abstract class $AppColorThemeCopyWith<$Res> {
           AppColorTheme value, $Res Function(AppColorTheme) then) =
       _$AppColorThemeCopyWithImpl<$Res, AppColorTheme>;
   @useResult
-  $Res call({Color primary, Color background});
+  $Res call({Color primary, Color background, Color buttonText});
 }
 
 /// @nodoc
@@ -48,6 +49,7 @@ class _$AppColorThemeCopyWithImpl<$Res, $Val extends AppColorTheme>
   $Res call({
     Object? primary = null,
     Object? background = null,
+    Object? buttonText = null,
   }) {
     return _then(_value.copyWith(
       primary: null == primary
@@ -57,6 +59,10 @@ class _$AppColorThemeCopyWithImpl<$Res, $Val extends AppColorTheme>
       background: null == background
           ? _value.background
           : background // ignore: cast_nullable_to_non_nullable
+              as Color,
+      buttonText: null == buttonText
+          ? _value.buttonText
+          : buttonText // ignore: cast_nullable_to_non_nullable
               as Color,
     ) as $Val);
   }
@@ -70,7 +76,7 @@ abstract class _$$AppColorThemeImplCopyWith<$Res>
       __$$AppColorThemeImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Color primary, Color background});
+  $Res call({Color primary, Color background, Color buttonText});
 }
 
 /// @nodoc
@@ -86,6 +92,7 @@ class __$$AppColorThemeImplCopyWithImpl<$Res>
   $Res call({
     Object? primary = null,
     Object? background = null,
+    Object? buttonText = null,
   }) {
     return _then(_$AppColorThemeImpl(
       primary: null == primary
@@ -96,6 +103,10 @@ class __$$AppColorThemeImplCopyWithImpl<$Res>
           ? _value.background
           : background // ignore: cast_nullable_to_non_nullable
               as Color,
+      buttonText: null == buttonText
+          ? _value.buttonText
+          : buttonText // ignore: cast_nullable_to_non_nullable
+              as Color,
     ));
   }
 }
@@ -103,16 +114,21 @@ class __$$AppColorThemeImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$AppColorThemeImpl implements _AppColorTheme {
-  const _$AppColorThemeImpl({required this.primary, required this.background});
+  const _$AppColorThemeImpl(
+      {required this.primary,
+      required this.background,
+      required this.buttonText});
 
   @override
   final Color primary;
   @override
   final Color background;
+  @override
+  final Color buttonText;
 
   @override
   String toString() {
-    return 'AppColorTheme(primary: $primary, background: $background)';
+    return 'AppColorTheme(primary: $primary, background: $background, buttonText: $buttonText)';
   }
 
   @override
@@ -122,11 +138,13 @@ class _$AppColorThemeImpl implements _AppColorTheme {
             other is _$AppColorThemeImpl &&
             (identical(other.primary, primary) || other.primary == primary) &&
             (identical(other.background, background) ||
-                other.background == background));
+                other.background == background) &&
+            (identical(other.buttonText, buttonText) ||
+                other.buttonText == buttonText));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, primary, background);
+  int get hashCode => Object.hash(runtimeType, primary, background, buttonText);
 
   @JsonKey(ignore: true)
   @override
@@ -138,12 +156,15 @@ class _$AppColorThemeImpl implements _AppColorTheme {
 abstract class _AppColorTheme implements AppColorTheme {
   const factory _AppColorTheme(
       {required final Color primary,
-      required final Color background}) = _$AppColorThemeImpl;
+      required final Color background,
+      required final Color buttonText}) = _$AppColorThemeImpl;
 
   @override
   Color get primary;
   @override
   Color get background;
+  @override
+  Color get buttonText;
   @override
   @JsonKey(ignore: true)
   _$$AppColorThemeImplCopyWith<_$AppColorThemeImpl> get copyWith =>

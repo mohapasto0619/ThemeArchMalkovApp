@@ -1,0 +1,58 @@
+{
+    "AppColorTheme": {
+        "scope": "dart",
+        "prefix": "colors",
+        "description": "Get AppColorTheme from context",
+        "body": [
+            "final colors = context.colors;"
+        ],
+    },
+    "AppTextTheme": {
+        "scope": "dart",
+        "prefix": "styles",
+        "description": "Get AppTextTheme from context",
+        "body": [
+            "final styles = context.styles;"
+        ],
+    },
+    "AppDimens": {
+        "scope": "dart",
+        "prefix": "dimens",
+        "description": "Get AppDimens from context",
+        "body": [
+            "final dimens = context.dimens;"
+        ],
+    },
+    "AppIconSizes": {
+        "scope": "dart",
+        "prefix": "iconSizes",
+        "description": "Get AppIconSizes from context",
+        "body": [
+            "final iconSizes = context.iconSizes;"
+        ],
+    },
+    "AppSpacingTheme": {
+        "scope": "dart",
+        "prefix": "spacings",
+        "description": "Get AppSpacingTheme from context",
+        "body": [
+            "final spacings = context.spacings;"
+        ],
+    },
+    "AppPaddingTheme": {
+        "scope": "dart",
+        "prefix": "paddings",
+        "description": "Get AppPaddingTheme from context",
+        "body": [
+            "final paddings = context.paddings;"
+        ],
+    },
+    "AppRadiusTheme": {
+        "scope": "dart",
+        "prefix": "radius",
+        "description": "Get AppRadiusTheme from context",
+        "body": [
+            "final radius = context.radius;"
+        ],
+    },
+}
