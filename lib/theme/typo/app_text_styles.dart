@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -77,15 +76,15 @@ extension TextStyleExtension on TextStyle {
       );
 }
 
-AppTextTheme handleTextSize({
-  required BuildContext context,
-}) {
-  final size = MediaQuery.sizeOf(context);
-  if (size.width <= 600) {
-    return AppTextTheme.regular();
-  } else if (size.width > 600 && size.width < 840) {
-    return AppTextTheme.regular();
-  } else {
-    return AppTextTheme.large();
+extension BuildContextExt on BuildContext {
+  AppTextTheme get handleTextSize {
+    final size = MediaQuery.sizeOf(this);
+    if (size.width <= 600) {
+      return AppTextTheme.regular();
+    } else if (size.width > 600 && size.width < 840) {
+      return AppTextTheme.regular();
+    } else {
+      return AppTextTheme.large();
+    }
   }
 }

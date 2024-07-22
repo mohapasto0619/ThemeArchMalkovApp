@@ -185,6 +185,7 @@ fabric.properties
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
+!.vscode/project.code-snippets
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
@@ -316,3 +317,4 @@ hs_err_pid*
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.toptal.com/developers/gitignore/api/dart,flutter,visualstudiocode,intellij,androidstudio
+devtools_options.yaml

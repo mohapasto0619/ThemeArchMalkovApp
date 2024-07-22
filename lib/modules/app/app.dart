@@ -20,15 +20,9 @@ class App extends ConsumerWidget {
     return Builder(
       builder: (context) {
         return AppThemeData(
-          appColorTheme: handleTheme(
-            context,
-          ),
-          appTextTheme: handleTextSize(
-            context: context,
-          ),
-          appDimens: handleDimensSize(
-            context: context,
-          ),
+          appColorTheme: context.handleThemeColor,
+          appTextTheme: context.handleTextSize,
+          appDimens: context.handleDimensSize,
           appAnimations: AppAnimationTheme.normal(),
           child: MaterialApp.router(
             routerConfig: appRouter,

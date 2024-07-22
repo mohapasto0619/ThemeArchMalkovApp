@@ -38,15 +38,15 @@ class AppDimens with _$AppDimens {
       );
 }
 
-AppDimens handleDimensSize({
-  required BuildContext context,
-}) {
-  final size = MediaQuery.sizeOf(context);
-  if (size.width <= 600) {
-    return AppDimens.compact();
-  } else if (size.width > 600 && size.width < 840) {
-    return AppDimens.medium();
-  } else {
-    return AppDimens.expanded();
+extension BuildContextExt on BuildContext {
+  AppDimens get handleDimensSize {
+    final size = MediaQuery.sizeOf(this);
+    if (size.width <= 600) {
+      return AppDimens.compact();
+    } else if (size.width > 600 && size.width < 840) {
+      return AppDimens.medium();
+    } else {
+      return AppDimens.expanded();
+    }
   }
 }
